@@ -1,4 +1,4 @@
-#include "Task.h"
+ï»¿#include "Task.h"
 #include "User.h"
 #include <sstream>
 bool isnum(const string& s) {
@@ -10,20 +10,19 @@ bool isnum(const string& s) {
 	return true;
 }
 
-
-
 class SystemManager {
 private:
 	vector<User> users;
 	Scheduler* scheduler;
-	//ÏµÍ³×´Ì¬,±íÊ¾µ±Ç°½çÃæÎ»ÖÃ
+	int userindex = -1;
+	//ç³»ç»ŸçŠ¶æ€,è¡¨ç¤ºå½“å‰ç•Œé¢ä½ç½®
 	enum SystemState {
 		MainMenu,
 		UserMenu,
 		TaskMenu
 	};
 	SystemState CuuentSystemState;
-	//ÅĞ¶ÏÊÇ·ñÓĞ¸ÃÓÃ»§
+	//åˆ¤æ–­æ˜¯å¦æœ‰è¯¥ç”¨æˆ·
 	bool isexist(int userID) {
 		for (auto& it : users) {
 			if (userID == it.get_id()) return true;
@@ -35,7 +34,7 @@ public:
 	SystemManager() {
 		CuuentSystemState = MainMenu;
 		User user(10086,"admin");
-		Task task(1, 1, 100, "¼ÆËã");
+		IOtask* task=new IOtask(1, 1, 100, "Print","Printer");
 		user.addTask(task);
 		users.push_back(user);
 	}
@@ -49,20 +48,30 @@ public:
 	}
 	void ShowUserTask(int userindex) {
 		if (userindex > 0 && userindex <= users.size())
+		{
 			users[userindex - 1].showTasks();
+			this->userindex = userindex - 1;
+		}
 	}
-	//ÏÔÊ¾ÌáÊ¾ĞÅÏ¢
+	//æ˜¾ç¤ºæç¤ºä¿¡æ¯
 	void ShowTips() {
+		cout << "========================================================" << endl;
 		if (CuuentSystemState == MainMenu) {
-			cout << "========================================================"<<endl;
 			cout << "1.Input Serial to manage the user's task" << "\n";
 			cout << "2.Input 'add userID userName' to add a user" << endl;
 			cout << "3.input 'del serial' to delete a user" << endl;
 			cout << "Input 'q' to exit" << endl;
 		}
+		else if (CuuentSystemState == UserMenu) {
+			cout << "1. Input 'addtask cpu/io taskId priority execTime description [extra]' add task" << endl;
+			cout << "2. Input 'run index' run task" << endl;
+			cout << "3. Input 'deltask index' del task" << endl;
+			cout << "4. Input 'back' back to mainmenu" << endl;
+
+		}
 
 	}
-	//¸ù¾İµ±Ç°½çÃæÀ´½âÎöÓÃ»§ÊäÈë
+	//æ ¹æ®å½“å‰ç•Œé¢æ¥è§£æç”¨æˆ·è¾“å…¥
 
 
 	void ParsingInput(string& s) {
@@ -72,6 +81,8 @@ public:
 				int num = stoi(s);
 				if (num < 0 && num > users.size()) { cout << "Wrong Serial Number!\n"; return; }
 				ShowUserTask(stoi(s));
+				CuuentSystemState = UserMenu;
+				ShowTips();
 				return;
 			}
 			else {
@@ -94,6 +105,72 @@ public:
 					else{ cout << "error input!!!" << endl; return; }
 				}
 				else { cout << "vaild cmd!!!" << endl; return; }
+			}
+		}
+		else if (CuuentSystemState == UserMenu) {
+			istringstream iss(s);
+			string cmd;
+			iss >> cmd;
+
+			if (cmd == "addtask") {
+				string type;
+				int id, priority, time;
+				string description;
+
+				iss >> type >> id >> priority >> time >> description;
+
+				if (type == "io") {
+					string device;
+					iss >> device;
+					IOtask* task=new IOtask(id, priority, time, description.c_str(), device.c_str());
+					users[userindex].addTask(task);
+					cout << " IO task addedã€‚" << endl;
+				}
+				else if (type == "cpu") {
+					int cpuLoad;
+					iss >> cpuLoad;
+					ComputationTask* task=new ComputationTask(id, priority, time, description.c_str(), cpuLoad);
+					users[userindex].addTask(task);
+					cout << " cpu task addedã€‚" << endl;
+				}
+				else {
+					cout << " unknown typeï¼Œshould be io or cpuã€‚" << endl;
+				}
+				users[userindex].showTasks();
+			}
+			else if (cmd == "run") {
+				int index;
+				if (iss >> index) {
+					auto& tasks = users[userindex].getTasks();
+					if (index > 0 && index <= tasks.size()) {
+						cout << "  Task Runningï¼š" << endl;
+						tasks[index - 1]->run();
+					}
+					else {
+						cout << " Serial errorã€‚" << endl;
+					}
+				}
+			}
+			else if (cmd == "deltask") {
+				int index;
+				if (iss >> index) {
+					auto& tasks = users[userindex].getTasks();
+					if (index > 0 && index <= tasks.size()) {
+						tasks.erase(tasks.begin() + index - 1);
+						cout << " task deletedã€‚" << endl;
+					}
+					else {
+						cout << " Serial errorã€‚" << endl;
+					}
+				}
+			}
+			else if (cmd == "back") {
+				CuuentSystemState = MainMenu;
+				ShowUsers();
+				ShowTips();
+			}
+			else {
+				cout << " input invaildï¼Œinput addtask/run/deltask/backã€‚" << endl;
 			}
 		}
 	}

@@ -4,7 +4,7 @@ User::User(int id, const char* name) {
 	userId=id;
 	userName=name;
 }
-void User::addTask(Task t) {
+void User::addTask(Task* t) {
 	tasks.push_back(t);
 
 }
@@ -15,12 +15,14 @@ void User::ShowUserMsg() {
 
 void User::showTasks() const {
 	cout << "====== User "<<userName<<" ======" << endl;
-	cout << "Serial" << "\tTaskid" << "\tPriority" << "\tExecTime" << "\tDescription" << "CpuLoad/Device" << endl;
+	cout << "Taskid" << "\tPriority" << "\tExecTime" << "\tDescription" << "\tCpuLoad/Device" << endl;
 	for (auto& it : tasks) {
-		it.printInfo();
+		it->printInfo();
 	}
 
 }
+
+vector<Task*>& User::getTasks() { return tasks; }
 
 int User::get_id() const { return userId; }
 
