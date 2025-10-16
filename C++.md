@@ -989,9 +989,21 @@ int main() {
 
 详见Project文件夹
 
+问题:
 
+1. ***对象切片***
 
+将一个子类对象赋值给一个基类对象（不是指针或引用），只会保留基类部分，子类特有的数据和行为（如重载的 printInfo()）会被“切掉”。
 
+```cpp
+vector<Task> tasks; // 存储的是 Task 对象，不是 Task*
+IOtask task();//IOtask是tasks的一个派生类
+user.addTask(task); // IOtask 被切片成 Task,派生类的功能失去
+```
+
+解决方案:
+
+使用指针存储对象任务
 
 
 
