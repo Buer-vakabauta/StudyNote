@@ -1,0 +1,49 @@
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36" version="28.2.8">
+  <diagram name="第 1 页" id="2nvRhlTCTTZ66J9Rt-Xp">
+    <mxGraphModel dx="1426" dy="743" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="YPz9Di7DzwEwHvrFuwJ0-4" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="YPz9Di7DzwEwHvrFuwJ0-1" target="YPz9Di7DzwEwHvrFuwJ0-3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="YPz9Di7DzwEwHvrFuwJ0-1" value="execve()" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="10" y="320" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="YPz9Di7DzwEwHvrFuwJ0-9" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="YPz9Di7DzwEwHvrFuwJ0-3" target="YPz9Di7DzwEwHvrFuwJ0-6">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="YPz9Di7DzwEwHvrFuwJ0-3" value="&lt;div style=&quot;text-align: left;&quot;&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;清除原来的代码段、数据段、堆、栈；&lt;/span&gt;&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255)); text-align: center;&quot;&gt;但文件描述符（除被标记&lt;/span&gt;&lt;code style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255)); text-align: center;&quot; data-end=&quot;890&quot; data-start=&quot;878&quot;&gt;FD_CLOEXEC&lt;/code&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255)); text-align: center;&quot;&gt; 的）保留。&lt;/span&gt;&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="170" y="320" width="160" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="YPz9Di7DzwEwHvrFuwJ0-5" value="卸载当前进程的用户空间" style="text;html=1;whiteSpace=wrap;align=center;verticalAlign=middle;rounded=0;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
+          <mxGeometry x="175" y="290" width="140" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="YPz9Di7DzwEwHvrFuwJ0-13" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="YPz9Di7DzwEwHvrFuwJ0-6" target="YPz9Di7DzwEwHvrFuwJ0-10">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="YPz9Di7DzwEwHvrFuwJ0-6" value="内核读取 ELF 文件头；&lt;div&gt;建立新的虚拟内存映射；&lt;/div&gt;&lt;div&gt;把代码段、数据段映射入内存。&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;align=left;" vertex="1" parent="1">
+          <mxGeometry x="370" y="320" width="160" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="YPz9Di7DzwEwHvrFuwJ0-7" value="加载新的可执行文件" style="text;html=1;whiteSpace=wrap;align=center;verticalAlign=middle;rounded=0;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
+          <mxGeometry x="375" y="290" width="140" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="YPz9Di7DzwEwHvrFuwJ0-16" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="YPz9Di7DzwEwHvrFuwJ0-10" target="YPz9Di7DzwEwHvrFuwJ0-14">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="YPz9Di7DzwEwHvrFuwJ0-10" value="把命令行参数 &lt;code data-end=&quot;1005&quot; data-start=&quot;997&quot;&gt;argv[]&lt;/code&gt; 与环境变量 &lt;code data-end=&quot;1020&quot; data-start=&quot;1012&quot;&gt;envp[]&lt;/code&gt; 压入栈中；&lt;div&gt;重新设置栈指针与入口地址（ELF 的 &lt;code data-end=&quot;1059&quot; data-start=&quot;1051&quot;&gt;_start&lt;/code&gt;）。&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;align=left;" vertex="1" parent="1">
+          <mxGeometry x="560" y="320" width="160" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="YPz9Di7DzwEwHvrFuwJ0-11" value="重置栈" style="text;html=1;whiteSpace=wrap;align=center;verticalAlign=middle;rounded=0;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
+          <mxGeometry x="565" y="290" width="140" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="YPz9Di7DzwEwHvrFuwJ0-14" value="原用户态指令流完全被替换；&lt;div&gt;不会返回到调用 &lt;code data-end=&quot;1119&quot; data-start=&quot;1113&quot;&gt;exec&lt;/code&gt; 的代码。&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;align=left;" vertex="1" parent="1">
+          <mxGeometry x="740" y="320" width="160" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="YPz9Di7DzwEwHvrFuwJ0-15" value="跳转执行新程序入口" style="text;html=1;whiteSpace=wrap;align=center;verticalAlign=middle;rounded=0;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
+          <mxGeometry x="745" y="290" width="140" height="30" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
