@@ -1007,23 +1007,185 @@ user.addTask(task); // IOtask 被切片成 Task,派生类的功能失去
 
 
 
-
-
-
-
 # 二 、模板编程（Generics）
 
+> 模板是泛型编程的基础，泛型编程即以一种独立于任何特定类型的方式编写代码。
+>
+> 模板是创建泛型类或函数的蓝图或公式。库容器，比如迭代器和算法，都是泛型编程的例子，它们都使用了模板的概念。
+
+## 2.1.模板的语法基础
+
+1. ***函数模板***
+
+   - 语法:`template <typename type> 函数返回类型 函数名(参数){函数体}  ` 这里的`template` 和`typename`均是关键字,示例:
+
+     ```cpp
+     //定义:
+     #include <iostream>
+     template<typename T>
+     void swapValue(T& a, T& b) {
+         T temp = a;
+         a = b;
+         b = temp;
+     }
+     //调用:
+     using namespace std;
+     int main() {
+         int x = 1, y = 2;
+         swapValue(x, y);  // 编译器自动推导出 T=int
+         double a = 1.1, b = 2.2;
+         swapValue<double>(a, b);  // 也可以显式指定类型
+         cout << x << endl << a << endl;//输出2 2.2
+     }
+     ```
+
+2. ***类模板***
+
+   - 语法:`template <class type> class 类名字`  ***注意***:这里的`class` 和上面的`typename`都是关键字并且他们语义上完全等价，编译器对这两种写法的处理方式也是是一样的,但更推荐使用typename避免歧义
+
+     ```cpp
+     #include <iostream>
+     using namespace std;
+     template<typename T>
+     class Box {
+     public:
+         T data;
+         Box(T d): data(d) {}
+         void show() { std::cout << data << std::endl; }
+     };
+     int main(){
+         Box<int> b1(42);
+         Box<std::string> b2("Hello World")   
+     }
+     ```
+
+
+---
 
 
 
+## 2.2模板的实例化(Instantiation)
 
+   > 模板本身不是可执行的代码,它只是一个***代码生成蓝图***
+   >
+   > 当你第一次使用某个具体类型时,编译器才会生成对应版本的函数或类
 
+   1. ***隐式实例化(Implicit Instantiation)***
 
+      - 最常见的写法,由编译器自动推导类型并生成代码
 
+      - 编译器在***使用点***根据实参类型自动生成相应版本
 
+      - 每种类型只生成一次
 
+        ```cpp
+        #include <iostream>
+        template<typename T>
+        void print(T val) {
+            std::cout << val << std::endl;
+        }
+        int main() {
+            print(42);        // 编译器自动实例化 print<int>
+            print("hello");   // 自动实例化 print<const char*>
+        }
+        ```
 
+        
 
+   2. ***显式实例化(Explict Instantiation)***
+
+      - 有时候，你**不希望在每个调用点重复生成模板代码**（尤其是大型项目、多文件编译）。
+      
+      - 可以使用显示实例化手动告诉编译器提前编译出某个特定类型的版本
+      
+      - 这样可以减少重复编译和代码膨胀
+      
+        ```cpp
+        // 声明模板
+        template<typename T>
+        void print(T val);
+        
+        // 显式实例化声明（告诉编译器别再生成这个版本）->.h文件
+        extern template void print<int>(int);
+        
+        // 显式实例化定义（在一个源文件中真正生成代码）->.cpp文件
+        template void print<int>(int);
+        
+        ```
+      
+      3.***显式特化(Explicit Specialization)***
+      
+         - 对特定的类型做特化版本
+      
+           ```cpp
+           template<typename T>
+           void print(T val) { std::cout << "General: " << val << std::endl; }
+           
+           template<>
+           void print<int>(int val) { std::cout << "Int version: " << val << std::endl; }
+           //当T=int时,会优先调用专门写的特化版本
+           ```
+      
+      ## 2.3函数模板(Function template)
+      
+      > 前面已经提到了关于函数模板的定义和调用
+      >
+      > 当调用函数模板时,编译器会根据类型自动"***推断出T的类型***"并实例化出一个对应的函数版本
+      >
+      > 编译器通过遵守一些特定的规则来进行推导,了解这些规则有利于我们模板的编写
+      
+       1. ***模板类型参数推导(Type Deduction)***
+      
+          - 按指传递(普通值传参):这是上面用到的方法,也是最直接的方法
+      
+            ```cpp
+            template <typename T>
+            void println(T msg){
+            	std::cout<<msg<<std::endl
+            }
+            int main(){
+                    int x=10;
+                    println(10);//传入类型为int,T被推导为int
+                }
+            ```
+          
+          - 指针推导:还是使用上面的模板
+          
+            ```cpp
+            int main(){
+                int a=42;
+                int* p= a;
+                println(p);//T被推导为int*
+                
+            }
+            ```
+          - ***引用推导***:
+      
+            ```cpp
+            //使用上面的模板
+            template <typename &T >
+            void println(T& msg){msg+=1;std::cout<<msg<<std::endl}
+            int main(){
+                int x=42;
+                const int cx=x;
+                println(x);
+                println(cx);
+            }
+            ```
+          
+          - 
+          - 
+          - 
+          - 
+            
+            
+            
+      
+      
+      
+      
+      
+      
 
 
 

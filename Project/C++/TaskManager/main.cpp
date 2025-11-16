@@ -67,7 +67,6 @@ public:
 			cout << "2. Input 'run index' run task" << endl;
 			cout << "3. Input 'deltask index' del task" << endl;
 			cout << "4. Input 'back' back to mainmenu" << endl;
-
 		}
 
 	}
@@ -123,6 +122,7 @@ public:
 					string device;
 					iss >> device;
 					IOtask* task=new IOtask(id, priority, time, description.c_str(), device.c_str());
+
 					users[userindex].addTask(task);
 					cout << " IO task added。" << endl;
 				}
